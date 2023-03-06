@@ -4,15 +4,11 @@ using UnityEngine.UI;
 public class CoinsPresenter : MonoBehaviour
 {
     private Coins _coins;
-    
+
     [SerializeField] private Text _render;
     [SerializeField] private Animator _animator;
 
-    private void Awake()
-    {
-        var amount = PlayerPrefs.GetInt("Coins", 0);
-        _coins = new Coins(amount);
-    }
+    public void Init(Coins coinsModel) => _coins = coinsModel;
 
     private void OnTriggerEnter(Collider other)
     {
