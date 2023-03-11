@@ -1,14 +1,14 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class CoinsPresenter : MonoBehaviour
 {
-    private Coins _coins;
+    [Inject] private Coins _coins;
 
-    [SerializeField] private Text _render;
+    [Inject(Id = "CoinsText")] private Text _render;
     [SerializeField] private Animator _animator;
-
-    public void Init(Coins coinsModel) => _coins = coinsModel;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -36,5 +36,20 @@ public class CoinsPresenter : MonoBehaviour
         _render.text = $"Coins: {_coins.Amount}";
         _animator.SetTrigger("OnPickupCoin");
         PlayerPrefs.SetInt("Coins", _coins.Amount);
+    }
+    
+    // Методы, чтобы показать работоспособность
+    private void Awake()
+    {
+        StartCoroutine(nameof(PickupCoin));
+    }
+
+    private IEnumerator PickupCoin()
+    {
+        while (true)
+        {
+            OnPickupCoin();
+            yield return new WaitForSeconds(1);
+        }
     }
 }
